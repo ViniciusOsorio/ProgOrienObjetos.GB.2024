@@ -8,8 +8,8 @@ class Computing_Process(Processo):
 
     def __init__(self, id, n1, n2, oper):
         super().__init__(id)
-        self._num1 = n1
-        self._num2 = n2
+        self._num1 = int(n1) if isinstance(int(n1), int) else float(n1)
+        self._num2 = int(n2) if isinstance(int(n2), int) else float(n2)
         self._operacao = oper
 
     @property
@@ -38,17 +38,15 @@ class Computing_Process(Processo):
 
     def execute(self):
 
-        match(self._operacao):
-            case '+':
+        match(int(self._operacao)):
+            case 1:
                 return self._num1 + self._num2
-            case '-':
-                return self._num1 + self._num2
-            case '*':
-                return self._num1 + self._num2
-            case '/':
-                return self._num1 + self._num2
-            case _:
-                print('Operação Informada É Inválida')
+            case 2:
+                return self._num1 - self._num2
+            case 3:
+                return self._num1 * self._num2
+            case 4:
+                return self._num1 / self._num2
     
     
 

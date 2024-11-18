@@ -8,8 +8,8 @@ class Computing_Process(Processo):
 
     def __init__(self, id, n1, n2, oper):
         super().__init__(id)
-        self._num1 = int(n1) if isinstance(int(n1), int) else float(n1)
-        self._num2 = int(n2) if isinstance(int(n2), int) else float(n2)
+        self._num1 = n1
+        self._num2 = n2
         self._operacao = oper
 
     @property
@@ -36,6 +36,22 @@ class Computing_Process(Processo):
     def oper(self, oper):
         self._operacao = oper
 
+    def return_oper_symb(self):
+        match(self._operacao):
+            case '1':
+                return '+'
+            case '2':
+                return '-'
+            case '3':
+                return '*'
+            case '4':
+                return '/'
+
+    def return_exp(self):
+        oper = self.return_oper_symb()
+        res = self.execute()
+        return f'{self._num1} {oper} {self._num2} = {res}'
+
     def execute(self):
 
         match(int(self._operacao)):
@@ -47,7 +63,3 @@ class Computing_Process(Processo):
                 return self._num1 * self._num2
             case 4:
                 return self._num1 / self._num2
-    
-    
-
-

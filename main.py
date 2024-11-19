@@ -78,6 +78,7 @@ while(not close_sys):
 
                     if(tipo_proc == '1'):
                         lista_proc.append(proc)
+                        
                     if(tipo_proc == '2'):
                         proc_exp = proc.return_exp()
                         write_proc = Writing_Process(proc_id, proc_exp)

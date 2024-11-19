@@ -2,12 +2,15 @@ from processo import Processo
 from computingProcess import Computing_Process
 from printingProcess import Printing_Process
 from writingProcess import Writing_Process
+from readingProcess import Reading_Process
 
 print('Bem-vindo ao Gerenciador de Processo GB10')
 
 close_sys = False
 
 lista_proc = []
+
+ind_lista = 1
 
 while(not close_sys):
     
@@ -16,9 +19,6 @@ while(not close_sys):
     
     match(opt):
         case '1':
-            
-            #determinando qual será o pid do processo
-            proc_id = len(lista_proc)+1 if len(lista_proc) > 0 else 1
 
             #ler e validar o tipo de processo a ser criado
             valid_proc = False
@@ -74,18 +74,26 @@ while(not close_sys):
                             print('2')
                             print('Operação Informada É Inválida! Tente Novamente')
                     
-                    proc = Computing_Process(proc_id, n1, n2, oper)
+                    proc = Computing_Process(ind_lista, n1, n2, oper)
 
                     if(tipo_proc == '1'):
                         lista_proc.append(proc)
-                        
+                        ind_lista += 1
+
                     if(tipo_proc == '2'):
                         proc_exp = proc.return_exp()
-                        write_proc = Writing_Process(proc_id, proc_exp)
+                        write_proc = Writing_Process(ind_lista, proc_exp)
                         lista_proc.append(write_proc)
+                        ind_lista += 1
 
                 case '3':
-                    proc = Writing_Process(proc_id, lista_proc)
+                    proc = Reading_Process(ind_lista)
+                    lista_proc.append(proc)
+                    ind_lista += 1
+
+                case '4':
+                    proc = Printing_Process(ind_lista)
+                    ind_lista += 1
 
         case '2':
             if len(lista_proc) > 0:

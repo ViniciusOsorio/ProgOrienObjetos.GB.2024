@@ -94,16 +94,50 @@ while(not close_sys):
                 case '4':
                     proc = Printing_Process(ind_lista)
                     ind_lista += 1
+                    lista_proc.append(proc)
 
         case '2':
             if len(lista_proc) > 0:
-                lista_proc[0].execute()
+                if(isinstance(lista_proc[0], Reading_Process)):
+                    read_procs = lista_proc[0].execute(ind_lista)
+                    for r in read_procs:
+                        lista_proc.append(r)
+                else:
+                    lista_proc[0].execute()
                 del lista_proc[0]
             else:
                 print('Nenhum processo listado!\n')
 
         case '3':
-            print('opt3')
+            valid_id = False
+            end_opt = False
+            p = None
+
+            while (not end_opt):
+                while(not valid_id):
+                    exec_proc = input('Informe o ID do processo que deseja executar:\n')
+                    if(not ('.' in exec_proc) and exec_proc.isnumeric()):
+                        valid_id = True
+
+                for proc in lista_proc:
+                    if proc.id == exec_proc:
+                        p = proc
+                        end_opt = True
+
+                if(isinstance(p, Reading_Process)):
+                    comp_procs = p.execute(ind_lista)
+                else:
+                    p.execute()
+
+                if(p == None):
+                    cont = input('ID informado não pertence a um processo existente!\nFavor, pressione X para encerrar o processo ou qualquer outra tecla para informar novo ID de Processo\n')
+                    match(cont):
+                        case 'X','x':
+                            end_opt = True
+                            input('Encerrando Processo\nPressione ENTER para continuar')
+                        case _:
+                            None
+
 
         case '4':
             print('opt4')

@@ -5,7 +5,7 @@ class Reading_Process(Processo):
     _read_target = ''
 
     def __init__(self, id):
-        super().__init__(id)
+        super().__init__(id, "Leitura")
         self._read_target = 'computation.txt'
 
     def execute(self):

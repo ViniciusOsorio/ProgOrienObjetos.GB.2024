@@ -19,3 +19,5 @@ class Writing_Process(Processo):
         exe.write(self._expressao)
 
         exe.close()
+
+        print(f"Expressão gravada: {self._expressao}")

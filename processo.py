@@ -1,3 +1,5 @@
+# Lorenzo Zardo Danzmann e Vinícius Panato Osório
+
 from abc import ABC, abstractmethod
 
 class Processo:

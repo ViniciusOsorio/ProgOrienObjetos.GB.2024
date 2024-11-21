@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     close_sys = False
 
-    lista_proc = [Computing_Process('1','2','4','/'),Computing_Process('2','4','3','*'),Computing_Process('3','8','4','-')]
+    lista_proc = []
 
     prox_pid = 1
 

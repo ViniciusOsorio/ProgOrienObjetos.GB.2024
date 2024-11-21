@@ -8,8 +8,8 @@ class Computing_Process(Processo):
 
     def __init__(self, id, n1, n2, oper):
         super().__init__(id, "Cálculo")
-        self._num1 = n1
-        self._num2 = n2
+        self._num1 = float(n1) if '.' in n1 else int(n1)
+        self._num2 = float(n2) if '.' in n1 else int(n2)
         self._operacao = oper
 
     @property
@@ -36,32 +36,19 @@ class Computing_Process(Processo):
     def oper(self, oper):
         self._operacao = oper
 
-    # Retorna o símbolo da operação dependendo do que for informado pelo usuário
-    def return_oper_symb(self):
-        match self._operacao:
-            case '1':
-                return '+'
-            case '2':
-                return '-'
-            case '3':
-                return '*'
-            case '4':
-                return '/'
-
     # Retorna a expressão completa
     def return_exp(self):
-        oper = self.return_oper_symb()
         res = self.execute()
-        return f'{self._num1} {oper} {self._num2} = {res}'
+        return f'{self._num1} {self._operacao} {self._num2} = {res}'
 
     # Executa a operação 
     def execute(self):
-        match int(self._operacao):
-            case 1:
+        match self._operacao:
+            case '+':
                 return self._num1 + self._num2
-            case 2:
+            case '-':
                 return self._num1 - self._num2
-            case 3:
+            case '*':
                 return self._num1 * self._num2
-            case 4:
+            case '/':
                 return self._num1 / self._num2

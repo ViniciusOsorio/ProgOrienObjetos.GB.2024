@@ -8,9 +8,11 @@ if __name__ == "__main__":
 
     close_sys = False
 
-    lista_proc = []
+    lista_proc = [Computing_Process('1','2','4','/'),Computing_Process('2','4','3','*'),Computing_Process('3','8','4','-')]
 
     prox_pid = 1
+
+    teste = []
 
     while not close_sys:
         
@@ -19,70 +21,77 @@ if __name__ == "__main__":
         
         match opt:
             case '1':
-
-                # ler e validar o tipo de processo a ser criado
-                valid_proc = False
-                while not valid_proc:
-                    tipo_proc = input(
-                        '1) Processo de Cálculo\n'
-                        '2) Processo de Gravação\n'
-                        '3) Processo de Leitura\n'
-                        '4) Processo de Impressão\n'
-                        'Informe que tipo de processo desejar criar: '
-                    )
-                    if tipo_proc.isnumeric() and 1 <= int(tipo_proc) <= 4:
-                        valid_proc = True
-                    else:
-                        print('Opção inválida. Tente novamente.\n')
-                
-                match tipo_proc:
-                    # Processo de cálculo
-                    case '1':
-                        n1 = float(input('Informe o primeiro número: '))
-                        n2 = float(input('Informe o segundo número: '))
-                        oper = input(
-                            '( + ) Adição\n'
-                            '( - ) Subtração\n'
-                            '( * ) Multiplicação\n'
-                            '( / ) Divisão\n'
-                            'Informe a operação desejada: '
+                #testa se é possível adicionar outro processo sem passar do limite estipulado de 100 processos
+                if(len(lista_proc) + 1 <= 100):
+                    # ler e validar o tipo de processo a ser criado
+                    valid_proc = False
+                    while not valid_proc:
+                        tipo_proc = input(
+                            '1) Processo de Cálculo\n'
+                            '2) Processo de Gravação\n'
+                            '3) Processo de Leitura\n'
+                            '4) Processo de Impressão\n'
+                            'Informe que tipo de processo desejar criar: '
                         )
-                        if oper not in {'+', '-', '*', '/'}:
-                            print('Operação inválida.\n')
+                        if tipo_proc.isnumeric() and 1 <= int(tipo_proc) <= 4:
+                            valid_proc = True
                         else:
-                            process = Computing_Process(prox_pid, n1, n2, oper)
-                            lista_proc.append(process)
-                            prox_pid += 1
-                            print('Processo de cálculo criado!\n')
-
-                    # Processo de gravação
-                    case '2':
-                        if lista_proc:
-                            last_process = lista_proc[-1]
-                            if isinstance(last_process, Computing_Process):
-                                expr = last_process.execute()
-                                process = Writing_Process(prox_pid, expr)
+                            print('Opção inválida. Tente novamente.\n')
+                    
+                    match tipo_proc:
+                        # Processo de cálculo
+                        case '1':
+                            n1 = input('Informe o primeiro número: ')
+                            while not n1.isnumeric():
+                                n1 = input('Dado inválido!\nFavor, informar um número válido: ')
+                            n2 = input('Informe o segundo número: ')
+                            while not n2.isnumeric():
+                                n2 = input('Dado inválido!\nFavor, informar um número válido: ')
+                            oper = input(
+                                '( + ) Adição\n'
+                                '( - ) Subtração\n'
+                                '( * ) Multiplicação\n'
+                                '( / ) Divisão\n'
+                                'Informe o símbolo da operação desejada: '
+                            )
+                            if oper not in {'+', '-', '*', '/'}:
+                                print('Operação inválida.\n')
+                            else:
+                                process = Computing_Process(prox_pid, n1, n2, oper)
                                 lista_proc.append(process)
                                 prox_pid += 1
-                                print('Processo de gravação criado!\n')
-                            else:
-                                print('O último processo na fila não é um processo de cálculo.\n')
-                        else:
-                            print('A fila de processos está vazia.\n')
+                                print('Processo de cálculo criado!\n')
 
-                    # Processo de leitura
-                    case '3':
-                        process = Reading_Process(prox_pid, lista_proc)
-                        lista_proc.append(process)
-                        prox_pid += 1
-                        print('Processo de leitura criado!\n')
-                    
-                    # Processo de impressão
-                    case '4':
-                        process = Printing_Process(prox_pid, lista_proc)
-                        lista_proc.append(process)
-                        prox_pid += 1
-                        print('Processo de impressão criado!\n')
+                        # Processo de gravação
+                        case '2':
+                            if lista_proc:
+                                last_process = lista_proc[-1]
+                                if isinstance(last_process, Computing_Process):
+                                    expr = last_process.execute()
+                                    process = Writing_Process(prox_pid, expr)
+                                    lista_proc.append(process)
+                                    prox_pid += 1
+                                    print('Processo de gravação criado!\n')
+                                else:
+                                    print('O último processo na fila não é um processo de cálculo.\n')
+                            else:
+                                print('A fila de processos está vazia.\n')
+
+                        # Processo de leitura
+                        case '3':
+                            process = Reading_Process(prox_pid, lista_proc)
+                            lista_proc.append(process)
+                            prox_pid += 1
+                            print('Processo de leitura criado!\n')
+                        
+                        # Processo de impressão
+                        case '4':
+                            process = Printing_Process(prox_pid, lista_proc)
+                            lista_proc.append(process)
+                            prox_pid += 1
+                            print('Processo de impressão criado!\n')
+                else:
+                    print("Adicionar um processo irá exceder o limite de 100 processos! Operação cancelada!")
 
             case '2':
                 if len(lista_proc) > 0:
@@ -97,27 +106,32 @@ if __name__ == "__main__":
                     print('Nenhum processo listado!\n')
 
             case '3':
+                print('\n')
                 valid_id = False
                 end_opt = False
                 p = None
 
                 while (not end_opt):
                     while(not valid_id):
+                        for p in lista_proc:
+                            print(f'{p.id}')
                         exec_proc = input('Informe o pid do processo que deseja executar:\n')
                         if(not ('.' in exec_proc) and exec_proc.isnumeric()):
                             valid_id = True
+                        else:
+                            exec_proc = input('Valor inválido!\nFavor, informe um valor que represente um ID válido: ')
 
                     for proc in lista_proc:
                         if proc.id == exec_proc:
                             p = proc
-                            end_opt = True
+                            end_opt = True                    
 
-                    if(isinstance(p, Reading_Process)):
-                        comp_procs = p.execute(prox_pid)
+                    if(p != None):
+                        if(isinstance(p, Reading_Process)):
+                            comp_procs = p.execute(prox_pid)
+                        else:
+                            p.execute()
                     else:
-                        p.execute()
-
-                    if(p == None):
                         cont = input('pid informado não pertence a um processo existente!\nFavor, pressione X para encerrar o processo ou qualquer outra tecla para informar novo pid de Processo\n')
                         match(cont):
                             case 'X','x':

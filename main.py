@@ -27,7 +27,7 @@ if __name__ == "__main__":
                     valid_proc = False
                     while not valid_proc:
                         tipo_proc = input(
-                            '1) Processo de Cálculo\n'
+                            '\n1) Processo de Cálculo\n'
                             '2) Processo de Gravação\n'
                             '3) Processo de Leitura\n'
                             '4) Processo de Impressão\n'
@@ -99,8 +99,9 @@ if __name__ == "__main__":
                         read_procs = lista_proc[0].execute(prox_pid)
                         for r in read_procs:
                             lista_proc.append(r)
+                        print('Leitura Concluída!')
                     else:
-                        lista_proc[0].execute()
+                        print(f'Retorno do Porcesso: {lista_proc[0].execute()}')
                     del lista_proc[0]
                 else:
                     print('Nenhum processo listado!\n')
@@ -110,35 +111,37 @@ if __name__ == "__main__":
                 valid_id = False
                 end_opt = False
                 p = None
+                if(len(lista_proc) > 0):
+                    while (not end_opt):
+                        while(not valid_id):
+                            for p in lista_proc:
+                                print(f'{p.id}')
+                            exec_proc = input('Informe o pid do processo que deseja executar:\n')
+                            if(not ('.' in exec_proc) and exec_proc.isnumeric()):
+                                valid_id = True
+                            else:
+                                exec_proc = input('\nValor inválido!\nFavor, informe um valor que represente um ID válido: ')
 
-                while (not end_opt):
-                    while(not valid_id):
-                        for p in lista_proc:
-                            print(f'{p.id}')
-                        exec_proc = input('Informe o pid do processo que deseja executar:\n')
-                        if(not ('.' in exec_proc) and exec_proc.isnumeric()):
-                            valid_id = True
+                        for proc in lista_proc:
+                            if proc.id == exec_proc:
+                                p = proc
+                                end_opt = True                    
+
+                        if(p != None):
+                            if(isinstance(p, Reading_Process)):
+                                comp_procs = p.execute(prox_pid)
+                            else:
+                                p.execute()
                         else:
-                            exec_proc = input('Valor inválido!\nFavor, informe um valor que represente um ID válido: ')
-
-                    for proc in lista_proc:
-                        if proc.id == exec_proc:
-                            p = proc
-                            end_opt = True                    
-
-                    if(p != None):
-                        if(isinstance(p, Reading_Process)):
-                            comp_procs = p.execute(prox_pid)
-                        else:
-                            p.execute()
-                    else:
-                        cont = input('pid informado não pertence a um processo existente!\nFavor, pressione X para encerrar o processo ou qualquer outra tecla para informar novo pid de Processo\n')
-                        match(cont):
-                            case 'X','x':
-                                end_opt = True
-                                input('Encerrando Processo\nPressione ENTER para continuar')
-                            case _:
-                                None
+                            cont = input('pid informado não pertence a um processo existente!\nFavor, pressione X para encerrar o processo ou qualquer outra tecla para informar novo pid de Processo\n')
+                            match(cont):
+                                case 'X','x':
+                                    end_opt = True
+                                    input('Encerrando Processo\nPressione ENTER para continuar')
+                                case _:
+                                    None
+                else:
+                    print('Nenhum processo listado!\n')
 
 
             case '4':

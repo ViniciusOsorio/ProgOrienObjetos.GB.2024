@@ -82,7 +82,7 @@ if __name__ == "__main__":
                         # Processo de impressão
                         case '4':
                             process = Printing_Process(prox_pid, lista_proc)
-                            lista_proc.append(process.execute())
+                            lista_proc.append(process)
                             prox_pid += 1
                             print('Processo de impressão criado!\n')
                 else:

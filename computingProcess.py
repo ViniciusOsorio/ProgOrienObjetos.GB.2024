@@ -1,3 +1,5 @@
+# Lorenzo Zardo Danzmann e Vinícius Panato Osório
+
 from processo import Processo
 
 class Computing_Process(Processo):
